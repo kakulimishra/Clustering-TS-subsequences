@@ -1,0 +1,32 @@
+###The original data cleaning of theeee London dataset in done in the graph based clustering work. 
+##But after analysing the data, I found that some of the  buildings have all zero readings, which was the cause of poor results
+##in the anomaly detection part of graph based clustering work. Hence, in this work, I have removed the houses which have continuus readings
+
+
+dataFolder="/home/ujjwal/Kakuli/Graph Representation of TS/London Data"
+
+# dataFile=read.csv(file.path(dataFolder,"ECG5000","ECG5000_TRAIN"),header=F)
+# labels=dataFile$V1
+# dataFile=dataFile[,-c(1)]
+
+dataFile=read.csv(file.path(dataFolder,"londonData_forGraph.csv"),header=T)
+cleanData = dataFile[,-c(1,2,3)]
+#dataFile = dataFile[1:200,4:498]
+
+temp<<- NULL
+N=ncol(cleanData)
+z<-1
+apply(cleanData,1, function(fun)
+  {
+  
+  runs <-  rle(fun[is.na(fun)==F])
+  
+ zeroCount=runs$lengths[runs$values==0]
+ if (length(zeroCount) && zeroCount/N >= 0.2)
+   temp<<- rbind(temp,z)
+ z<<-z+1
+temp
+})
+cleanData=data.frame(cbind(dataFile[-temp, c(1,2,3)], cleanData[-temp,]),stringsAsFactors = F, row.names = NULL)
+write.csv(cleanData, "/home/ujjwal/Kakuli/Subsequence clustering/londonDataset.csv", row.names = F)
+

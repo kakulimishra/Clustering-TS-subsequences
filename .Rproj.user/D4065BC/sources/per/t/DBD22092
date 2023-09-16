@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1694679652498.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2367708237",
+    "id" : "DBD22092",
+    "lastKnownWriteTime" : 1615925679,
+    "last_content_update" : 1615925679,
+    "path" : "~/Kakuli/Subsequence clustering/Code 1.0/dataCleaning_London.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "22,2",
+        "scrollLine" : "7"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

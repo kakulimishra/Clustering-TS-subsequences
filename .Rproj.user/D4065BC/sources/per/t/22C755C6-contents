@@ -1,0 +1,201 @@
+##This is a sample file that show how to clean the data for further processing. 
+## All the other datasets have been cleaned in a similar way.
+
+
+library(dplyr)
+library(pracma)
+
+
+
+extractFullData= function(allFiles)
+{
+  ### The lines below here processes the cleaned houses and finds out the common dates in all the houses, to be used in the 
+  ### experiments. 
+  
+  newDf=NULL
+  for (i in 1:length(allFiles))
+  {
+    df= read.csv(file.path(getwd(),"Cleaned houses_halfHourly",allFiles[i]), header=T)[,c(1,6)]
+    
+    x= as.Date(df$max.as.POSIXct.df.Datetime..[i])-as.Date(df$min.as.POSIXct.df.Datetime..[i])
+    if (x> 730)    ##2 years data. This can be reduced accordingly
+    {
+      newDf=rbind(newDf,df[i,])
+    }
+  }
+  common_minDate=max(df$min.as.POSIXct.df.Datetime..)
+  common_maxDate=min(df$max.as.POSIXct.df.Datetime..)
+  
+  print(common_minDate)
+  print (common_maxDate)
+  
+  ### Now choose the dates which lies within 'common_minDate' to common_maxDate' from the calling function.
+  return (newDf)
+}
+
+
+
+featureExtraction=function()
+{
+  
+  allFiles= list.files(file.path(getwd(),"Cleaned houses_halfHourly"),recursive = F)
+  
+  ### Use the function below to find common dates 
+  commonDateList= extractFullData(allFiles)
+  
+  ###Take 30 houses of each "Adversity", "Affluent" "Comfortable"
+  
+  types=c("Adversity","Affluent","Comfortable")
+  
+  splitGroups=split(commonDateList,commonDateList$acornGroup)
+  allHouseData=NULL
+  for (y in 2:length(splitGroups))    ##The first group is ignored due to lesser houses
+  {
+    fileNames=splitGroups[[y]]$fileName[1:70]
+    
+    
+    for (z in 1:length(fileNames))
+    {
+      print (z)
+      
+      df=read.csv(file.path(getwd(),"Cleaned houses_halfHourly",fileNames[z]),header=T,stringsAsFactors = F)
+      houseId=(fileNames[z])
+      
+      #In the below line, the 6 month data are extracted from the houses.
+      
+      df=data.frame(df[which(as.character(df$Datetime)=="2012-03-01 00:00:00"): which(as.character(df$Datetime)=="2012-08-31 00:00:00"),],row.names = NULL)
+      aGroup=as.numeric(which(types==unique(df$Acorn_grouped)))
+      bindData=data.frame(cbind("House"=houseId, "dates"=(df$Datetime[1]),
+                                "trueLabels"=aGroup,t(df$KWH)),stringAsFactors=F)
+      allHouseData=rbind.fill(allHouseData,bindData)
+      
+    }
+  }
+  
+  
+  #allHouseData=as.data.frame(allHouseData,stringsAsFactors = F)
+  write.csv(data.frame(allHouseData),file.path(getwd(),"londonData_forGraph.csv"),row.names = F)
+  
+  return (allHouseData)
+  
+  
+  
+}
+
+missingData=function(dta)
+{
+  
+  old=nrow(dta)
+  
+  library(dplyr)
+  library(zoo)
+  
+  ##################################################################################################### 
+  #Replace the leading and trailing zeros
+  if (is.na(dta$KWH[1]))
+    dta$KWH[1]=dta$KWH[2]
+  else if (is.na(dta$KWH[nrow(dta)]))
+    dta$KWH[nrow(dta)]=dta$KWH[(nrow(dta)-1)]
+  
+  #####################################################################################################  
+  #Interpolation of missing values in the middle of the data
+  date_seq <- data.frame("DateTime"=seq(min(as.POSIXct(as.character(dta$DateTime))),
+                                        max(as.POSIXct(as.character(dta$DateTime))),
+                                        by=(60*30)))
+  
+  dta=date_seq %>% full_join(dta, by = "DateTime") %>%
+    mutate(KWH = na.approx(KWH,na.rm=F))
+  
+  new=nrow(dta)
+  
+  if(old!=new)
+    print ("Missing data found")
+  
+  return (dta)           
+}
+
+
+replaceDuplicates=function(dta)
+{
+  library(zoo)
+  temp <- data.frame(read.zoo(dta, header = TRUE, 
+                              aggregate = mean))
+  
+  #temp=data.frame("KWH"=temp,row.names = NULL)
+  # date_seq <- data.frame("DateTime"=seq(min(as.POSIXct(as.character(dta$DateTime))), 
+  #                                       max(as.POSIXct(as.character(dta$DateTime))), 
+  #                                       by=(60*30)))
+  
+  temp=data.frame(cbind(unique(dta$DateTime),temp))
+  
+  #There are certain rows where the time is not in half hours viz. in buildings[4], buildings[26], in the "buildings" list
+  #where the time is "18:20:32" and the power value is NA. For further details, find for "NA" in the "dta" named dataframe
+  #In the line below, such NA rows are removed. 
+  
+  temp=na.omit(temp)
+  
+  colnames(temp)=c("DateTime","KWH")
+  return (temp)
+}
+
+
+
+
+cleanFiles= function()
+{
+  
+  hourlyData=function(dta)
+  {
+    dta=as.data.frame(dta)
+    dta=aggregate(KWH~Hour,data=dta,function(f) mean(as.numeric(as.character(f))))
+    
+    return(data.frame((dta[,2])))
+  }
+  
+  allMerge=NULL
+  allFiles= list.files(path=file.path(getwd(),"London Data","All houses"),recursive = F)
+  storeDates=NULL
+  
+  for (files in 1:length(allFiles))
+  {
+    print (files)
+    dfCleaned<-NULL
+    df=(read.csv(file.path(getwd(),"London Data","All houses",allFiles[files]),header=TRUE,sep=",",stringsAsFactors = F))
+
+    df$DateTime=as.POSIXct(df$DateTime)
+    df$KWH.hh..per.half.hour.=as.numeric(df$KWH.hh..per.half.hour.)
+    
+    fileName=unique(as.character(df$LCLid))
+    acornGroup=unique(as.character(df$Acorn_grouped))
+
+    df=replaceDuplicates(df[,c("DateTime","KWH.hh..per.half.hour.")]) #duplicates replaced by mean values
+    df=missingData(df)        #missing values replaced by linear interpolation
+    
+    
+    library(xts)
+    
+    # dfAvg <- aggregate(df$KWH, list(hour=cut(as.POSIXct(df$DateTime), "hour")),mean)
+    # dfCleaned=data.frame(cbind(fileName,dfAvg,acornGroup))
+    # colnames(dfCleaned)=c("House","Datetime","KWH","Acorn_grouped")
+    
+    dfCleaned=data.frame(cbind(fileName,df,acornGroup))
+    colnames(dfCleaned)=c("House","Datetime","KWH","Acorn_grouped")
+    
+    storeDates=rbind(storeDates,cbind.data.frame(min(as.POSIXct(dfCleaned$Datetime)),max(as.POSIXct(dfCleaned$Datetime)),acornGroup,fileName))
+    write.csv(dfCleaned,file.path(getwd(),"London Data","Cleaned houses_halfHourly",paste0(fileName,".csv")),row.names = F)
+    
+  }
+  return(storeDates)
+}
+
+
+
+
+
+setwd("/home/ujjwal/Kakuli/Graph Representation of TS/London Data")
+p="/home/kakuli/Smart Meter London Dataset"
+allFiles=list.files(path=file.path(p,"Power-Networks-LCL-June2015(withAcornGps).csv_Pieces"))
+dtaAll=NULL
+
+# cleanFiles()
+featureExtraction()

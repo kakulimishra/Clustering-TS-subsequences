@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1694675507123.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "7|1|41|0|\n45|1|55|0|\n60|1|67|0|\n73|1|83|0|\n89|1|108|0|\n",
+    "hash" : "2990403373",
+    "id" : "4CB79ED4",
+    "lastKnownWriteTime" : 1694679177,
+    "last_content_update" : 1694679177483,
+    "path" : "~/Kakuli/Subsequence clustering/Github copy/call_to_clustering_techniques.R",
+    "project_path" : "call_to_clustering_techniques.R",
+    "properties" : {
+        "cursorPosition" : "168,48",
+        "scrollLine" : "155",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

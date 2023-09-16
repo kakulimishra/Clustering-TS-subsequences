@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1694595533102.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "436060580",
+    "id" : "EACECB4A",
+    "lastKnownWriteTime" : 1694675462,
+    "last_content_update" : 1694675462299,
+    "path" : "~/Kakuli/Subsequence clustering/Github copy/mainCall.R",
+    "project_path" : "mainCall.R",
+    "properties" : {
+        "cursorPosition" : "5,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

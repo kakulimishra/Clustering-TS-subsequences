@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1694595537694.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "1|1|14|0|\n18|1|170|0|\n",
+    "hash" : "2108937770",
+    "id" : "1294481F",
+    "lastKnownWriteTime" : 1694597406,
+    "last_content_update" : 1694677285810,
+    "path" : "~/Kakuli/Subsequence clustering/Github copy/ts_to_symbols.R",
+    "project_path" : "ts_to_symbols.R",
+    "properties" : {
+        "cursorPosition" : "171,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

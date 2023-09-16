@@ -1,0 +1,49 @@
+library(dplyr)
+library(igraph)
+library(TSclust)
+library(clusterSim)
+
+
+mainCall= function(fileToRead, data_nm)
+{
+  winLength = c(1, 2, 4, 6, 8, 12, 24)
+
+  for (z in (winLength))
+  {
+    
+    window= 2*z   # half hours converted into hours
+    print (window)
+    dta.norm= (fileToRead-mean(unlist(fileToRead)))/sd(unlist(fileToRead))
+    start=Sys.time()
+    out = ts_to_symbols( dta.norm, window )
+    print (Sys.time()-start)
+    symbolicRep= out[[1]]
+    numAlpha= out[[2]]
+    brkPoint= out[[3]]
+    
+    ##A format to save the files
+    name_sym = paste0(data_nm,"_sym_", "win", window, ".csv")
+    write.csv(data.frame(symbolicRep), file.path(getwd(), "Results", "Symbolic representation",name_sym), row.names=F)
+    
+    write.table(cbind(numAlpha,window), file.path(getwd(), "Results", "Proposed", paste0(data_nm,"_numAlpha", ".csv")), append=T, row.names = F, col.names = F, sep=",")  
+    
+    name_brkPoint=paste0(data_nm,"_brkPoint", "_win",window, ".csv")
+    write.csv(data.frame(brkPoint), file.path(getwd(), "Results", "Proposed",name_brkPoint), row.names=F)
+    
+  }
+}
+
+
+dataSet=c("London", "Ausgrid", "Stockmarket", "Webtraffic", "IRISH")
+for (p in dataSet) 
+{
+  
+  data_nm= p
+  print (data_nm)
+  dataFile=read.csv(file.path(getwd(),paste0(data_nm,"Dataset.csv")),header=T)
+  
+  ##Remove the other categorical information
+  dataFile=dataFile[,-c(1,2)]
+  mainCall(dataFile, data_nm)
+  
+}

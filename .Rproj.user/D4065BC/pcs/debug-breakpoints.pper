@@ -1,0 +1,51 @@
+{
+    "debugBreakpointsState" : {
+        "breakpoints" : [
+            {
+                "editor_line_number" : 133,
+                "editor_state" : 1,
+                "function_name" : "calls_to_clustering_techniques",
+                "function_steps" : "4,4,11",
+                "id" : 18,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 133,
+                "needs_updated_steps" : true,
+                "package_name" : "",
+                "path" : "~/Kakuli/Subsequence clustering/Github copy/call_to_clustering_techniques.R",
+                "state" : 1,
+                "type" : 0
+            },
+            {
+                "editor_line_number" : 20,
+                "editor_state" : 2,
+                "function_name" : "extractFullData",
+                "function_steps" : "",
+                "id" : 19,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 20,
+                "needs_updated_steps" : false,
+                "package_name" : "",
+                "path" : "~/Kakuli/Subsequence clustering/Github copy/london_dataprep.R",
+                "state" : 2,
+                "type" : 0
+            },
+            {
+                "editor_line_number" : 41,
+                "editor_state" : 2,
+                "function_name" : "featureExtraction",
+                "function_steps" : "",
+                "id" : 20,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 41,
+                "needs_updated_steps" : false,
+                "package_name" : "",
+                "path" : "~/Kakuli/Subsequence clustering/Github copy/london_dataprep.R",
+                "state" : 2,
+                "type" : 0
+            }
+        ]
+    }
+}

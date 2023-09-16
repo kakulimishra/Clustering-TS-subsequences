@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1694679877071.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "118|1|138|0|\n",
+    "hash" : "2205718566",
+    "id" : "22C755C6",
+    "lastKnownWriteTime" : 1694682146,
+    "last_content_update" : 1694682146693,
+    "path" : "~/Kakuli/Subsequence clustering/Github copy/london_dataprep.R",
+    "project_path" : "london_dataprep.R",
+    "properties" : {
+        "cursorPosition" : "38,1",
+        "scrollLine" : "28",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
